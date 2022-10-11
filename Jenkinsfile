@@ -1,64 +1,40 @@
 pipeline {
-	agent any
+    agent {
+        label 'docker_labelnode_number'
+    }
 	stages {
-		stage('Lint HTML') {
+		
+		stage('Clone Repo') {
 			steps {
-				sh 'tidy -q -e *.html'
+					sh "git clone -b main https://github.com/shadabshah1680/k8s-blue-green.git"
+				}
 			}
-		}
 		stage('Build Docker Image') {
 			steps {
-				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
-					sh '''
-						docker build -t shadabshah1680/multi-server:blue_green_kubernetes .
-					'''
+					sh "sudo docker build -t shadabshah1680/multi-server:blue_green_kubernetes  -f k8s-blue-green/Dockerfile ."
 				}
 			}
-		}
+		
 		stage('Upload Image To Dockerhub') {
 			steps {
-				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
-					sh '''
-						docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-						docker push shadabshah1680/multi-server:blue_green_kubernetes
-					'''
+		            sh "name=`aws ssm get-parameter --name docker-username --query \'Parameter.Value\' --region us-east-1 --output text` && DOCKER_PASSWORD=`aws ssm get-parameter --name docker-password --query \'Parameter.Value\' --region us-east-1 --output text` && sudo docker login -u \${name} -p \${DOCKER_PASSWORD} && sudo docker push shadabshah1680/multi-server:blue_green_kubernetes"
 				}
 			}
-		}
-		stage('Set kubectl use-context') {
-			steps {
-				withAWS(region:'us-west-2', credentials:'aws-cli') {
-					sh '''
-						kubectl config use-context arn:aws:eks:us-west-2:528472731478:cluster/kubernetescluster
-					'''
-				}
-			}
-		}
 		stage('Blue replication controller') {
 			steps {
-				withAWS(region:'us-west-2', credentials:'aws-cli') {
-					sh '''
-						kubectl apply -f ./blue-replication-controller.yaml
-					'''
+					sh 	"sudo kubectl apply -f ./blue-replication-controller.yaml"
 				}
 			}
-		}
+		
 		stage('Green replication controller') {
 			steps {
-				withAWS(region:'us-west-2', credentials:'aws-cli') {
-					sh '''
-						kubectl apply -f ./green-replication-controller.yaml
-					'''
-				}
+					sh "sudo kubectl apply -f ./green-replication-controller.yaml"
+
 			}
 		}
 		stage('Create the service in kubernetes cluster traffic to blue controller') {
 			steps {
-				withAWS(region:'us-west-2', credentials:'aws-cli') {
-					sh '''
-						kubectl apply -f ./blue-service.yaml
-					'''
-				}
+					sh 	"sudo kubectl apply -f ./blue-service.yaml"
 			}
 		}
 		stage('User approve to continue') {
@@ -68,11 +44,12 @@ pipeline {
         }
 		stage('Create the service in kubernetes cluster traffic to green controller') {
 			steps {
-				withAWS(region:'us-west-2', credentials:'aws-cli') {
-					sh '''
-						kubectl apply -f ./green-service.yaml
-					'''
-				}
+					sh	"sudo kubectl apply -f ./green-service.yaml"
+			}
+		}
+		stage('Clean Ws') {
+			steps {
+					sh	"rm -rf /home/jenkins/workspace/k8s-bg-deployment/*"
 			}
 		}
 
