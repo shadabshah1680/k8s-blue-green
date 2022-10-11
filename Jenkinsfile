@@ -22,19 +22,19 @@ pipeline {
 			}
 		stage('Blue replication controller') {
 			steps {
-					sh 	"sudo kubectl apply -f ./blue-replication-controller.yaml"
+					sh 	"sudo kubectl apply -f ./k8s-blue-green/blue-replication-controller.yaml"
 				}
 			}
 		
 		stage('Green replication controller') {
 			steps {
-					sh "sudo kubectl apply -f ./green-replication-controller.yaml"
+					sh "sudo kubectl apply -f ./k8s-blue-green/green-replication-controller.yaml"
 
 			}
 		}
 		stage('Create the service in kubernetes cluster traffic to blue controller') {
 			steps {
-					sh 	"sudo kubectl apply -f ./blue-service.yaml"
+					sh 	"sudo kubectl apply -f ./k8s-blue-green/blue-service.yaml"
 			}
 		}
 		stage('User approve to continue') {
@@ -44,12 +44,12 @@ pipeline {
         }
 		stage('Create the service in kubernetes cluster traffic to green controller') {
 			steps {
-					sh	"sudo kubectl apply -f ./green-service.yaml"
+					sh	"sudo kubectl apply -f ./k8s-blue-green/green-service.yaml"
 			}
 		}
 		stage('Clean Ws') {
 			steps {
-					sh	"rm -rf /home/jenkins/workspace/k8s-bg-deployment/*"
+					sh	"sudo rm -rf /home/jenkins/workspace/k8s-bg-deployment/*"
 			}
 		}
 
