@@ -17,3 +17,4 @@ spec:
         image: shadabshah1680/multi-server:green_image
         ports:
         - containerPort: 80 
+        imagePullPolicy: Always
