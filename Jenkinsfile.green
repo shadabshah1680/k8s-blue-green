@@ -6,9 +6,7 @@ pipeline {
 		stage('Build Docker Image') {
 			steps {
 
-					sh "commit_id=`git rev-parse --short HEAD` && sudo docker build -t shadabshah1680/green_image:\${commit_id}  -f Dockerfile ."
-					sh "sed -i \"s/latest/\${commit_id}/g\" green-replication-controller.yaml"
-					sh "sed -i \"s/latest/\${commit_id}/g\" green-replication-controller.yaml"
+					sh "commit_id=`git rev-parse --short HEAD` && sudo docker build -t shadabshah1680/green_image:\${commit_id}  -f Dockerfile . && sed -i \"s|latest|\${commit_id}|\" green-replication-controller.yaml && sed -i \"s|latest|\${commit_id}|\" green-replication-controller.yaml"
 				}
 			}
 		
