@@ -24,7 +24,6 @@ node("master") {
 				  sh 	"scp green-service.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/green-service.yaml\""
 				  sh "sed -i \"s|colour|green|g\" qa-service.yaml && scp qa-service.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/qa-service.yaml\""
 
-
 				} 
 				
 			} catch(ExceptionType1 e1) { 
