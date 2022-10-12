@@ -6,7 +6,7 @@ pipeline {
 		stage('Build Docker Image') {
 			steps {
 
-					sh "commit_id=`git rev-parse --short HEAD` && sudo docker build -t docker push shadabshah1680/green_image:\${commit_id}  -f Dockerfile ."
+					sh "commit_id=`git rev-parse --short HEAD` && sudo docker build -t shadabshah1680/green_image:\${commit_id}  -f Dockerfile ."
 					sh "sed -i 's/Blue/Green/g' index.html"
 				}
 			}
