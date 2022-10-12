@@ -1,33 +1,27 @@
 pipeline {
     agent {
-        label 'docker_labelnode_number'
+        label 'master'
     }
 	stages {
-		stage('Clone Repo') {
-			steps {
-					sh "git clone -b green https://github.com/shadabshah1680/k8s-blue-green.git"
-                    sh "sed -i 's/Blue/Green/g' k8s-blue-green/index.html"
-				}
-			}
 		stage('Build Docker Image') {
 			steps {
-					sh "sudo docker build -t shadabshah1680/multi-server:green_image  -f k8s-blue-green/Dockerfile ."
+					sh "sudo docker build -t shadabshah1680/multi-server:green_image  -f Dockerfile ."
 				}
 			}
+		
 		stage('Upload Image To Dockerhub') {
 			steps {
 		            sh "name=`aws ssm get-parameter --name docker-username --query \'Parameter.Value\' --region us-east-1 --output text` && DOCKER_PASSWORD=`aws ssm get-parameter --name docker-password --query \'Parameter.Value\' --region us-east-1 --output text` && sudo docker login -u \${name} -p \${DOCKER_PASSWORD} && sudo docker push shadabshah1680/multi-server:green_image"
 				}
-			}		
-		stage('Green replication controller') {
-			steps {
-					sh "sudo kubectl apply -f ./k8s-blue-green/green-replication-controller.yaml"
 			}
-		}
-
+		stage('green replication controller') {
+			steps {
+					sh 	"scp green-replication-controller.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f ./tmp/green-replication-controller.yaml\""
+				}
+			}
 		stage('Create the service in kubernetes cluster traffic to green controller') {
 			steps {
-					sh	"sudo kubectl apply -f ./k8s-blue-green/green-service.yaml"
+					sh 	"scp green-service.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f ./tmp/green-service.yaml\""
 			}
 		}
 		stage('Clean Ws') {
