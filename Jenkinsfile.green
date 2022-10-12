@@ -1,3 +1,9 @@
+node('master'){
+    stage('stage1'){
+					def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+    }
+}
+
 pipeline {
     agent {
         label 'master'
@@ -6,7 +12,7 @@ pipeline {
 		stage('Build Docker Image') {
 			steps {
 				  step{
-					def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+
 				  	}
 					sh "sudo docker build -t docker push shadabshah1680/green_image:\${commit_id}  -f Dockerfile ."
 					sh "sed -i 's/Blue/Green/g' index.html"
