@@ -26,8 +26,9 @@ node("master") {
 
 				} 
 				
-			} catch(ExceptionType1 e1) { 
- 
+			} 
+			catch(ExceptionType1 e1) { 
+				echo 'pass'
 		} 
     }
 	stage('Clean Ws') {
