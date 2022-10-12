@@ -5,13 +5,13 @@ pipeline {
 	stages {
 		stage('Clone Repo') {
 			steps {
-					// sh "git clone -b green https://github.com/shadabshah1680/k8s-blue-green.git"
+					sh "git clone -b green https://github.com/shadabshah1680/k8s-blue-green.git"
                     sh "sed -i 's/Blue/Green/g' index.html"
 				}
 			}
 		stage('Build Docker Image') {
 			steps {
-					sh "sudo docker build -t shadabshah1680/multi-server:green_image  -f Dockerfile ."
+					sh "sudo docker build -t shadabshah1680/multi-server:green_image  -f k8s-blue-green/Dockerfile ."
 				}
 			}
 		stage('Upload Image To Dockerhub') {
@@ -22,13 +22,13 @@ pipeline {
 		
 		stage('Green replication controller') {
 			steps {
-					sh "sudo kubectl apply -f ./green-deployment.yaml"
+					sh "sudo kubectl apply -f ./k8s-blue-green/green-deployment.yaml"
 
 			}
 		}
 		stage('Create the service in kubernetes cluster traffic to green controller') {
 			steps {
-					sh	"sudo kubectl apply -f ./green-service.yaml"
+					sh	"sudo kubectl apply -f ./k8s-blue-green/green-service.yaml"
 			}
 		}
 		stage('Clean Ws') {
