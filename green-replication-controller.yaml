@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: green
-        image: shadabshah1680/multi-server:green_image
+        image: shadabshah1680/green_image
         ports:
         - containerPort: 80 
         imagePullPolicy: Always
