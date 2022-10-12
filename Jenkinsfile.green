@@ -13,7 +13,7 @@ pipeline {
 		
 		stage('Upload Image To Dockerhub') {
 			steps {
-		            sh "commit_id=`git rev-parse --short HEAD` && name=`aws ssm get-parameter --name docker-username --query \'Parameter.Value\' --region us-east-1 --output text` && DOCKER_PASSWORD=`aws ssm get-parameter --name docker-password --query \'Parameter.Value\' --region us-east-1 --output text` && sudo docker login -u \${name} -p \${DOCKER_PASSWORD} && sudo docker push push shadabshah1680/green_image:\${commit_id}"
+		            sh "commit_id=`git rev-parse --short HEAD` && name=`aws ssm get-parameter --name docker-username --query \'Parameter.Value\' --region us-east-1 --output text` && DOCKER_PASSWORD=`aws ssm get-parameter --name docker-password --query \'Parameter.Value\' --region us-east-1 --output text` && sudo docker login -u \${name} -p \${DOCKER_PASSWORD} && sudo docker push shadabshah1680/green_image:\${commit_id}"
 				}
 			}
 		stage('green replication controller') {
