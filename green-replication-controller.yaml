@@ -14,7 +14,7 @@ spec:
         app: green
     spec:
       containers:
-      - image: shadabshah1680/green_image:latest
+      - image: shadabshah1680/multi-server:latest
         imagePullPolicy: Always
         name: green
         ports:
