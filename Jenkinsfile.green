@@ -11,9 +11,7 @@ pipeline {
 	stages {
 		stage('Build Docker Image') {
 			steps {
-				  step{
 
-				  	}
 					sh "sudo docker build -t docker push shadabshah1680/green_image:\${commit_id}  -f Dockerfile ."
 					sh "sed -i 's/Blue/Green/g' index.html"
 				}
