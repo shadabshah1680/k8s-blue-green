@@ -1,20 +1,21 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: blue
-spec:
-  replicas: 1
-  selector:
+  labels:
     app: blue
+spec:
+  selector:
+    matchLabels:
+      app: blue
   template:
     metadata:
-      name: blue
       labels:
         app: blue
     spec:
       containers:
-      - name: blue
-        image: shadabshah1680/multi-server:blue_image
+      - image: shadabshah1680/blue_image:latest
+        imagePullPolicy: Always
+        name: blue
         ports:
         - containerPort: 80
-        imagePullPolicy: Always
