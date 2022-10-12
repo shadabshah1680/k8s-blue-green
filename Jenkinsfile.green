@@ -1,14 +1,13 @@
-node('master'){
-    stage('stage1'){
-					def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-    }
-}
-
 pipeline {
     agent {
         label 'master'
     }
 	stages {
+	    stage('stage1'){
+			steps{
+			def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+			}
+    	}
 		stage('Build Docker Image') {
 			steps {
 
