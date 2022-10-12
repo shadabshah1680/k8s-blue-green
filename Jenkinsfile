@@ -4,7 +4,6 @@ node("master") {
 // k8s-blue-green.git'
 //     }
     stage('BUILD') {
-            sh "aws s3 sync /var/lib/jenkins/workspace/CloudFormation_Stack_blogs_v1_scripted/aws/cloudformation/CFstackAssignment/nested-stack-v3 s3://nested-stack-101/scripted"
 			def status = sh(script:"ssh ubuntu@172.31.91.46 \"kubectl describe svc bluegreenloadbalancer  | grep Selector | cut -d\"=\" -f2\"", returnStdout: true).trim() 
 			try { 
 				if (status ==  'green' )
