@@ -5,7 +5,9 @@ pipeline {
 	stages {
 	    stage('stage1'){
 			steps{
-			def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+				script{
+				def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+				}
 			}
     	}
 		stage('Build Docker Image') {
