@@ -1,21 +1,20 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: ReplicationController
 metadata:
   name: green
-  labels:
-    app: green
 spec:
+  replicas: 1
   selector:
-    matchLabels:
-      app: green
+    app: green
   template:
     metadata:
+      name: green
       labels:
         app: green
     spec:
       containers:
-      - image: shadabshah1680/green_image:latest
-        imagePullPolicy: Always
-        name: green
+      - name: green
+        image: shadabshah1680/green_image:latest
         ports:
-        - containerPort: 80
+        - containerPort: 80 
+        imagePullPolicy: Always
