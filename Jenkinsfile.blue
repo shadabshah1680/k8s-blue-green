@@ -3,11 +3,6 @@ pipeline {
         label 'master'
     }
 	stages {
-		// stage('Clone Repo') {
-		// 	steps {
-		// 			sh "git clone -b blue https://github.com/shadabshah1680/k8s-blue-green.git"
-		// 		}
-		// 	}
 		stage('Build Docker Image') {
 			steps {
 					sh "sudo docker build -t shadabshah1680/multi-server:blue_image  -f Dockerfile ."
