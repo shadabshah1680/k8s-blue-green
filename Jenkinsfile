@@ -27,7 +27,7 @@ node("master") {
 				} 
 				
 			} 
-			catch( Exception as e) 
+			catch( Exception ee) 
 			{ 
 				echo 'pass'
 			} 
