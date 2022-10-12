@@ -1,4 +1,8 @@
-def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+node("master"){
+  	step{
+		def commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+	}
+}
 pipeline {
     agent {
         label 'master'
