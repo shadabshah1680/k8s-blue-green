@@ -6,7 +6,7 @@ pipeline {
 		stage('Build Docker Image') {
 			steps {
 					sh "sudo docker build -t shadabshah1680/multi-server:green_image  -f Dockerfile ."
-					sh "sed -i 's/Blue/Green/g' k8s-green-green/index.html"
+					sh "sed -i 's/Blue/Green/g' index.html"
 				}
 			}
 		
