@@ -7,8 +7,8 @@ pipeline {
 			steps {
 
 					sh "commit_id=`git rev-parse --short HEAD` && sudo docker build -t shadabshah1680/green_image:\${commit_id}  -f Dockerfile ."
-					sh "sed -i \"s\|latest\|\${commit_id}\|g\" green-replication-controller.yaml"
-					sh "sed -i \"s\|latest\|\${commit_id}\|g\" green-replication-controller.yaml"
+					sh "sed -i \"s/latest/\${commit_id}/g\" green-replication-controller.yaml"
+					sh "sed -i \"s/latest/\${commit_id}/g\" green-replication-controller.yaml"
 				}
 			}
 		
