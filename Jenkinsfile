@@ -15,6 +15,7 @@ node("master") {
 				  sh 	"scp green-replication-controller.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/green-replication-controller.yaml\""
 				  sh 	"scp green-service.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/green-service.yaml\""
 				}
+				}
 			catch( Exception ea) 
 			{ 
 				echo 'pass'
