@@ -14,7 +14,7 @@ spec:
         app: blue
     spec:
       containers:
-      - image: shadabshah1680/multi-server:latest
+      - image: shadabshah1680/blue_image:latest
         imagePullPolicy: Always
         name: blue
         ports:
