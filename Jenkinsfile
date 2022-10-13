@@ -29,6 +29,11 @@ node("master") {
 				}
 			}
 			}
+			catch( Exception eb) 
+			{ 
+					echo 'pass'	
+			}
+	}
     stage('BUILD') {
 			def status = sh(script:"ssh ubuntu@172.31.91.46 \"kubectl describe svc bluegreenloadbalancer  | grep Selector | cut -d\"=\" -f2\"", returnStdout: true).trim() 
 			try {
@@ -70,7 +75,6 @@ node("master") {
 	}
 	
 }
-
 
 
 
