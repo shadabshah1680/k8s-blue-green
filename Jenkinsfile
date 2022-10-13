@@ -31,9 +31,9 @@ node("master") {
 			} 
     }
 	stage('Clean Ws') {
-			steps {
+			
 					cleanWs()
-			}
+		
 	}
 	
 
