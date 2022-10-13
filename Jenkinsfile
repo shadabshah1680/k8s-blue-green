@@ -36,7 +36,7 @@ node("master") {
 				{
 		 		  sh "sed -i \"s|colour|green|g\" index.html && commit_id=`git rev-parse --short HEAD` && sudo docker build -t shadabshah1680/multi-server:\${commit_id}  -f Dockerfile . && sed -i \"s|latest|\${commit_id}|\" green-replication-controller.yaml && sed -i \"s|latest|\${commit_id}|\" green-replication-controller.yaml"
 				  sh "commit_id=`git rev-parse --short HEAD` && name=`aws ssm get-parameter --name docker-username --query \'Parameter.Value\' --region us-east-1 --output text` && DOCKER_PASSWORD=`aws ssm get-parameter --name docker-password --query \'Parameter.Value\' --region us-east-1 --output text` && sudo docker login -u \${name} -p \${DOCKER_PASSWORD} && sudo docker push shadabshah1680/multi-server:\${commit_id}"
-				  sh "sed -i \"s|colour|green|g\" qa-service.yaml && scp qa-service.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/qa-service.yaml\""
+				  sh "sed -i \"s|colour|blue|g\" qa-service.yaml && scp qa-service.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/qa-service.yaml\""
 				  input "Ready to change redirect traffic to green?"
 				  sh 	"scp green-replication-controller.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/green-replication-controller.yaml\""
 				  sh 	"scp green-service.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/green-service.yaml\""
