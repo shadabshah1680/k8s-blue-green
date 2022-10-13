@@ -7,7 +7,7 @@ node("master") {
 			def status = sh(script:"ssh ubuntu@172.31.91.46 \"kubectl describe svc bluegreenloadbalancer  | grep Selector | cut -d\"=\" -f2\"", returnStdout: true).trim() 
 			try { 
 				if (status ==  'green' )
-				{	
+				{	sh "ls && pwd"
 					sh "sed -i \"s|colour|blue|g\" index.html && commit_id=`git rev-parse --short HEAD` && sudo docker build -t shadabshah1680/multi-server:\${commit_id}  -f Dockerfile . && sed -i \"s|latest|\${commit_id}|\" blue-replication-controller.yaml && sed -i \"s|latest|\${commit_id}|\" green-replication-controller.yaml"
 					sh "commit_id=`git rev-parse --short HEAD` && name=`aws ssm get-parameter --name docker-username --query \'Parameter.Value\' --region us-east-1 --output text` && DOCKER_PASSWORD=`aws ssm get-parameter --name docker-password --query \'Parameter.Value\' --region us-east-1 --output text` && sudo docker login -u \${name} -p \${DOCKER_PASSWORD} && sudo docker push shadabshah1680/multi-server:\${commit_id}"
 					sh 	"scp blue-replication-controller.yaml ubuntu@172.31.91.46:/tmp && ssh ubuntu@172.31.91.46 \"sudo kubectl apply -f /tmp/blue-replication-controller.yaml\""
