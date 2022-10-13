@@ -7,7 +7,7 @@ node("master") {
 				def status = sh(script:"ssh ubuntu@172.31.91.46 \"kubectl describe svc bluegreenloadbalancer  | grep Selector | cut -d\"=\" -f2\"", returnStdout: true).trim() 
 			try {
 				echo "${status}"
-				if ( status !=  'green'  || status !=  'blue' )
+				if ( "${status}" !=  'green'  || "${status}" !=  'blue' )
 				{	
 				  	sh "sed -i \"s|colour|blue|g\" index.html && sudo docker build -t shadabshah1680/blue_image:latest  -f Dockerfile ."
 					sh "name=`aws ssm get-parameter --name docker-username --query \'Parameter.Value\' --region us-east-1 --output text` && DOCKER_PASSWORD=`aws ssm get-parameter --name docker-password --query \'Parameter.Value\' --region us-east-1 --output text` && sudo docker login -u \${name} -p \${DOCKER_PASSWORD} && sudo docker push shadabshah1680/blue_image:latest"
@@ -27,7 +27,7 @@ node("master") {
 					echo 'pass'	
 				}
 			}
-			}
+			
 			catch( Exception eb) 
 			{ 
 					echo 'pass'	
@@ -46,7 +46,7 @@ node("master") {
 			def status = sh(script:"ssh ubuntu@172.31.91.46 \"kubectl describe svc bluegreenloadbalancer  | grep Selector | cut -d\"=\" -f2\"", returnStdout: true).trim() 
 			try {
 				echo "${status}"
-				if ( status ==  'green' )
+				if ( "${status}" ==  'green' )
 				{	
 					sh "ls && pwd"
 					sh "sudo docker system prune -a -f"
