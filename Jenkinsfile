@@ -1,8 +1,8 @@
 node("master") {
-//     stage('SCM') {
-//         git branch: 'main', url: 'git@github.com:shadabshah1680/
-// k8s-blue-green.git'
-//     }
+    stage('SCM') {
+        git branch: 'bluegreen', url: 'git@github.com:shadabshah1680/
+k8s-blue-green.git'
+    }
     stage('BUILD') {
 			def status = sh(script:"ssh ubuntu@172.31.91.46 \"kubectl describe svc bluegreenloadbalancer  | grep Selector | cut -d\"=\" -f2\"", returnStdout: true).trim() 
 			try { 
